@@ -15,7 +15,7 @@ var Module starlark.StringDict
 
 func init() {
 	m, err := convert.MakeStringDict(map[string]interface{}{
-		"twitter_client": TwitterClient,
+		"client": Client,
 	})
 	if err != nil {
 		panic("converting twitter module")
@@ -23,7 +23,7 @@ func init() {
 	Module = m
 }
 
-func TwitterClient(token string) twitterClient {
+func Client(token string) twitterClient {
 	return twitterClient{token}
 }
 

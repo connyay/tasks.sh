@@ -5,6 +5,7 @@ import (
 
 	"go.starlark.net/starlark"
 
+	"github.com/connyay/tasks-sh/tasklib/reddit"
 	"github.com/connyay/tasks-sh/tasklib/twitter"
 	"github.com/connyay/tasks-sh/tasklib/yfinance"
 )
@@ -12,6 +13,7 @@ import (
 var modules = map[string]starlark.StringDict{
 	"yfinance": yfinance.Module,
 	"twitter":  twitter.Module,
+	"reddit":   reddit.Module,
 }
 
 func Loader(thread *starlark.Thread, module string) (starlark.StringDict, error) {

@@ -38,6 +38,8 @@ github.com/sourcegraph/starlight v0.0.0-20200510065702-c68e5b848a14/go.mod h1:cF
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
+github.com/thecsw/mira v1.1.2 h1:Ve3OqeRI6v99+r8ao8zOn4d7e3KKe3Ha82TJUoKRUSI=
+github.com/thecsw/mira v1.1.2/go.mod h1:0c1MMnwJR8Isu6zwkvgYUiarqipPgDLfYKAURNRHwXo=
 go.starlark.net v0.0.0-20181203220515-5c7d5aa7ed56/go.mod h1:c1/X6cHgvdXj6pUlmWKMkuqRnW4K8x2vwt6JAaaircg=
 go.starlark.net v0.0.0-20211013185944-b0039bd2cfe3 h1:oBcONsksxvpeodDrLjiMDaKHXKAVVfAydhe/792CE/o=
 go.starlark.net v0.0.0-20211013185944-b0039bd2cfe3/go.mod h1:t3mmBBPzAVvK0L0n1drDmrQsJ8FoIx4INCqVMTr/Zo0=
