@@ -1,7 +1,7 @@
 load("twitter", "client")
 
 def run():
-    token = env("BEARER_TOKEN")
+    token = env("TWITTER_BEARER_TOKEN")
     tweets = client(token).Tweets(parameters.get("user", "ryancohen"))
     if parameters.get("dump"):
         dump(tweets)
