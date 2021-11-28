@@ -14,22 +14,24 @@ import (
 )
 
 var cli struct {
-	Script string `flag:"" short:"s" name:"script" help:"Script to evaluate." type:"path"`
+	Star       string            `flag:"" name:"star" help:"Star script to evaluate." type:"path"`
+	Parameters map[string]string `flag:"" name:"parameters" short:"p" help:"Parameters to pass to script."`
 }
 
 func main() {
 	ctx := kong.Parse(&cli)
 
 	globals, err := convert.MakeStringDict(map[string]interface{}{
-		"printf": fmt.Printf,
-		"logf":   log.Printf,
-		"panic":  log.Panicf,
-		"dump":   spew.Dump,
-		"env":    getenv,
+		"printf":     fmt.Printf,
+		"logf":       log.Printf,
+		"panic":      log.Panicf,
+		"dump":       spew.Dump,
+		"env":        getenv,
+		"parameters": cli.Parameters,
 	})
 	ctx.FatalIfErrorf(err, "converting globals")
 
-	_, err = eval(cli.Script, globals, tasklib.Loader)
+	_, err = eval(cli.Star, globals, tasklib.Loader)
 	ctx.FatalIfErrorf(err, "eval")
 }
 
