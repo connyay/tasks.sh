@@ -1,12 +1,12 @@
-package lib
+package tasklib
 
 import (
 	"fmt"
 
 	"go.starlark.net/starlark"
 
-	"github.com/connyay/tasks-sh/lib/twitter"
-	"github.com/connyay/tasks-sh/lib/yfinance"
+	"github.com/connyay/tasks-sh/tasklib/twitter"
+	"github.com/connyay/tasks-sh/tasklib/yfinance"
 )
 
 var modules = map[string]starlark.StringDict{

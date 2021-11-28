@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/alecthomas/kong"
-	"github.com/connyay/tasks-sh/lib"
+	"github.com/connyay/tasks-sh/tasklib"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/sourcegraph/starlight"
 	"github.com/sourcegraph/starlight/convert"
@@ -29,7 +29,7 @@ func main() {
 	})
 	ctx.FatalIfErrorf(err, "converting globals")
 
-	_, err = eval(cli.Script, globals, lib.Loader)
+	_, err = eval(cli.Script, globals, tasklib.Loader)
 	ctx.FatalIfErrorf(err, "eval")
 }
 
