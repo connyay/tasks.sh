@@ -23,6 +23,7 @@ func main() {
 
 	globals, err := convert.MakeStringDict(map[string]interface{}{
 		"printf":     fmt.Printf,
+		"sprintf":    fmt.Sprintf,
 		"logf":       log.Printf,
 		"panic":      log.Panicf,
 		"dump":       spew.Dump,
