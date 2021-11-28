@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/alecthomas/kong"
 	"github.com/connyay/tasks-sh/tasklib"
@@ -27,18 +28,31 @@ func main() {
 		"logf":       log.Printf,
 		"panic":      log.Panicf,
 		"dump":       spew.Dump,
-		"env":        getenv,
 		"parameters": cli.Parameters,
 	})
 	ctx.FatalIfErrorf(err, "converting globals")
 
-	_, err = eval(cli.Star, globals, tasklib.Loader)
+	_, err = eval(cli.Star, globals, envLoader(tasklib.Loader))
 	ctx.FatalIfErrorf(err, "eval")
 }
 
-func getenv(k string) string {
-	// allowlist? namespaced?
-	return os.Getenv(k)
+func envLoader(next starlight.LoadFunc) starlight.LoadFunc {
+	env := map[string]interface{}{}
+	for _, e := range os.Environ() {
+		parts := strings.SplitN(e, "=", 2)
+		// allowlist? namespaced?
+		env[parts[0]] = parts[1]
+	}
+	envMod, err := convert.MakeStringDict(env)
+	if err != nil {
+		panic(err)
+	}
+	return func(thread *starlark.Thread, module string) (starlark.StringDict, error) {
+		if module == "environment" {
+			return envMod, nil
+		}
+		return next(thread, module)
+	}
 }
 
 func eval(filename string, globals starlark.StringDict, load starlight.LoadFunc) (map[string]interface{}, error) {

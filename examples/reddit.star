@@ -1,13 +1,14 @@
 load("reddit", "client")
+load("environment", "REDDIT_BOT_CLIENT_ID", "REDDIT_BOT_CLIENT_SECRET", "REDDIT_BOT_USERNAME", "REDDIT_BOT_PASSWORD")
 
 def run():
     subreddit = parameters.get("subreddit", "earthporn")
     sort = parameters.get("sort", "rising")
     posts = client(
-        env("REDDIT_BOT_CLIENT_ID"),
-        env("REDDIT_BOT_CLIENT_SECRET"),
-        env("REDDIT_BOT_USERNAME"),
-        env("REDDIT_BOT_PASSWORD"),
+        REDDIT_BOT_CLIENT_ID,
+        REDDIT_BOT_CLIENT_SECRET,
+        REDDIT_BOT_USERNAME,
+        REDDIT_BOT_PASSWORD,
     ).Posts(subreddit, sort)
     if parameters.get("dump"):
         dump(posts)
