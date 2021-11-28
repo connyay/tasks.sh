@@ -1,13 +1,13 @@
-load("reddit", reddit_client="client", "SORT_NEW")
+load("reddit", reddit_client="client")
 load("twilio", twilio_client="client")
 
-def get_posts(subreddit):
+def get_posts(subreddit, sort):
     posts = reddit_client(
         env("REDDIT_BOT_CLIENT_ID"),
         env("REDDIT_BOT_CLIENT_SECRET"),
         env("REDDIT_BOT_USERNAME"),
         env("REDDIT_BOT_PASSWORD"),
-    ).Posts(subreddit, SORT_NEW)
+    ).Posts(subreddit, sort)
     if parameters.get("dump"):
         dump(posts)
     return posts
@@ -19,8 +19,10 @@ def send_msg(number, msg):
 
 def run():
     subreddit = parameters.get("subreddit", "earthporn")
-    msg = sprintf("Three latest %s posts:\n", subreddit)
-    for post in get_posts(subreddit)[0:3]:
+    sort = parameters.get("sort", "new")
+    count = int(parameters.get("count", "3"))
+    msg = sprintf("%s %s posts:\n", sort, subreddit)
+    for post in get_posts(subreddit, sort)[0:count]:
         msg += sprintf("%s (/u/%s @ %v\n", post.Data.Title, post.Data.Author, post.Data.CreatedUtc)
 
     logf(msg)

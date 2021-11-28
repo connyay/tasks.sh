@@ -1,13 +1,14 @@
-load("reddit", "client", "SORT_NEW")
+load("reddit", "client")
 
 def run():
     subreddit = parameters.get("subreddit", "earthporn")
+    sort = parameters.get("sort", "rising")
     posts = client(
         env("REDDIT_BOT_CLIENT_ID"),
         env("REDDIT_BOT_CLIENT_SECRET"),
         env("REDDIT_BOT_USERNAME"),
         env("REDDIT_BOT_PASSWORD"),
-    ).Posts(subreddit, SORT_NEW)
+    ).Posts(subreddit, sort)
     if parameters.get("dump"):
         dump(posts)
     for post in posts:

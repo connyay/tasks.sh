@@ -8,26 +8,9 @@ import (
 
 var Module starlark.StringDict
 
-// Sort represents the possible ways to sort submissions.
-type Sort string
-
-const (
-	SortDefault       Sort = ""
-	SortHot           Sort = "hot"
-	SortNew           Sort = "new"
-	SortRising        Sort = "rising"
-	SortTop           Sort = "top"
-	SortControversial Sort = "controversial"
-)
-
 func init() {
 	m, err := convert.MakeStringDict(map[string]interface{}{
-		"client":             Client,
-		"SORT_HOT":           SortHot,
-		"SORT_NEW":           SortNew,
-		"SORT_RISING":        SortRising,
-		"SORT_TOP":           SortTop,
-		"SORT_CONTROVERSIAL": SortControversial,
+		"client": Client,
 	})
 	if err != nil {
 		panic("converting reddit module")
@@ -58,6 +41,6 @@ type redditClient struct {
 	reddit *mira.Reddit
 }
 
-func (rc redditClient) Posts(subreddit string, sort Sort) ([]mira.PostListingChild, error) {
-	return rc.reddit.GetSubredditPosts(subreddit, string(sort), "all", 10)
+func (rc redditClient) Posts(subreddit string, sort string) ([]mira.PostListingChild, error) {
+	return rc.reddit.GetSubredditPosts(subreddit, sort, "all", 10)
 }
