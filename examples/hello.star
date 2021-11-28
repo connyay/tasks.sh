@@ -1,5 +1,5 @@
 
 def run():
-    logf("hello world")
+    logf("Hello World!")
 
 run()

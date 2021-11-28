@@ -25,7 +25,7 @@ func init() {
 }
 
 func LoadTickerData(ticker string) (ChartQueryResponse, error) {
-	log.Printf("fetch %q", ticker)
+	log.Printf("Loading %s ticker data", ticker)
 	query := url.Values{}
 	query.Set("indicators", "quote")
 	query.Set("includeTimestamp", "true")

@@ -4,12 +4,13 @@ load("environment", "REDDIT_BOT_CLIENT_ID", "REDDIT_BOT_CLIENT_SECRET", "REDDIT_
 def run():
     subreddit = parameters.get("subreddit", "earthporn")
     sort = parameters.get("sort", "rising")
+    count = int(parameters.get("count", "5"))
     posts = client(
         REDDIT_BOT_CLIENT_ID,
         REDDIT_BOT_CLIENT_SECRET,
         REDDIT_BOT_USERNAME,
         REDDIT_BOT_PASSWORD,
-    ).Posts(subreddit, sort)
+    ).Posts(subreddit, sort)[0:count]
     if parameters.get("dump"):
         dump(posts)
     for post in posts:
