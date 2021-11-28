@@ -2,10 +2,13 @@ load("twitter", "client")
 load("environment", "TWITTER_BEARER_TOKEN")
 
 def run():
-    tweets = client(TWITTER_BEARER_TOKEN).Tweets(parameters.get("user", "ryancohen"))
+    twitter = client(TWITTER_BEARER_TOKEN)
+    user = twitter.User(parameters.get("user", "Funfacts"))
+    count = int(parameters.get("count", "5"))
+    tweets = user.Tweets()[:count]
     if parameters.get("dump"):
         dump(tweets)
     for tweet in tweets:
-        printf("Ryan tweeted: %q at %s\n", tweet.Text, tweet.CreatedAt)
+        printf("[%s]: %q at %s\n", user.Name, tweet.Text, tweet.CreatedAt)
 
 run()

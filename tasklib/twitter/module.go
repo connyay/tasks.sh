@@ -27,26 +27,19 @@ func Client(token string) twitterClient {
 	return twitterClient{token}
 }
 
-type Tweet struct {
-	ID        string    `json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	Text      string    `json:"text"`
-	Source    string    `json:"source"`
+type User struct {
+	ID       string `json:"id"`
+	Name     string `json:"name"`
+	Username string `json:"username"`
+
+	twitterClient
 }
 
-type twitterClient struct {
-	token string
-}
-
-func (tc twitterClient) Tweets(username string) ([]Tweet, error) {
-	userID, err := tc.getUserID(username)
-	if err != nil {
-		return nil, err
-	}
+func (u User) Tweets() ([]Tweet, error) {
 	query := url.Values{}
 	query.Add("tweet.fields", "created_at,source")
-	url := "https://api.twitter.com/2/users/" + userID + "/tweets?" + query.Encode()
-	res, err := tc.sendGet(url)
+	url := "https://api.twitter.com/2/users/" + u.ID + "/tweets?" + query.Encode()
+	res, err := u.sendGet(url)
 	if err != nil {
 		return nil, err
 	}
@@ -67,30 +60,39 @@ func (tc twitterClient) Tweets(username string) ([]Tweet, error) {
 	return timelineResponse.Data, nil
 }
 
-func (tc twitterClient) getUserID(username string) (string, error) {
+type Tweet struct {
+	ID        string    `json:"id"`
+	CreatedAt time.Time `json:"created_at"`
+	Text      string    `json:"text"`
+	Source    string    `json:"source"`
+}
+
+type twitterClient struct {
+	token string
+}
+
+func (tc twitterClient) User(username string) (User, error) {
 	query := url.Values{}
 	query.Add("usernames", username)
 	url := "https://api.twitter.com/2/users/by?" + query.Encode()
 	res, err := tc.sendGet(url)
 	if err != nil {
-		return "", err
+		return User{}, err
 	}
 	defer res.Body.Close()
 	var usersRes struct {
-		Data []struct {
-			ID       string `json:"id"`
-			Name     string `json:"name"`
-			Username string `json:"username"`
-		} `json:"data"`
+		Data []User `json:"data"`
 	}
 	err = json.NewDecoder(res.Body).Decode(&usersRes)
 	if err != nil {
-		return "", err
+		return User{}, err
 	}
 	if len(usersRes.Data) == 0 {
-		return "", errors.New("user not found")
+		return User{}, errors.New("user not found")
 	}
-	return usersRes.Data[0].ID, nil
+	u := usersRes.Data[0]
+	u.twitterClient = tc
+	return u, nil
 }
 
 func (tc twitterClient) sendGet(url string) (*http.Response, error) {
