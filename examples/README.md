@@ -78,3 +78,9 @@ $ go run ./cmd/eval --star examples/reddit.star
 [earthporn]: "Mount Rainier National Park - OC- 4032x3024" (/u/taoofjerry at 1638141202.000000)
 [earthporn]: "Fallen tree in River. Atlanta, GA [3814x3054] [OC]" (/u/fenrirctj89 at 1638141721.000000)
 ```
+
+## Reddit + Twilio
+
+[text-new-reddit-posts.star](./text-new-reddit-posts.star)
+
+This example is a combination of the above reddit and twilio examples. It pulls reddit posts and sends a text message with the titles.
