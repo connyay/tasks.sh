@@ -13,6 +13,7 @@ import (
 	"github.com/connyay/tasks-sh/tasklib"
 	"github.com/connyay/tasks-sh/tasklib/database"
 	"github.com/connyay/tasks-sh/tasklib/environment"
+	"github.com/connyay/tasks-sh/tasklib/varz"
 )
 
 var cli struct {
@@ -33,7 +34,9 @@ func main() {
 	loader := tasklib.Loader
 	database, close := database.Loader(loader, taskID)
 	defer close()
-	loader = environment.Loader(database)
+	varz, close := varz.Loader(database, taskID)
+	defer close()
+	loader = environment.Loader(varz)
 	err := eval(cli.Star, cli.Parameters, tasklib.Globals, loader)
 	ctx.FatalIfErrorf(err, "eval")
 }
