@@ -97,10 +97,17 @@ func DatabaseLoader(next starlight.LoadFunc, taskID string) (starlight.LoadFunc,
 	}, close
 }
 
-func dbExec(db *sql.DB) func(query string, args ...interface{}) error {
-	return func(query string, args ...interface{}) error {
-		_, err := db.Exec(query, args...)
-		return err
+func dbExec(db *sql.DB) func(query string, args ...interface{}) (int64, string) {
+	return func(query string, args ...interface{}) (int64, string) {
+		res, err := db.Exec(query, args...)
+		if err != nil {
+			return 0, err.Error()
+		}
+		rows, err := res.RowsAffected()
+		if err != nil {
+			return 0, err.Error()
+		}
+		return rows, ""
 	}
 }
 
