@@ -1,9 +1,6 @@
 package main
 
 import (
-	"os"
-	"strings"
-
 	"github.com/alecthomas/kong"
 	"github.com/connyay/tasks-sh/tasklib"
 	"github.com/sourcegraph/starlight"
@@ -19,27 +16,12 @@ var cli struct {
 func main() {
 	ctx := kong.Parse(&cli)
 
-	err := eval(cli.Star, cli.Parameters, tasklib.Globals, envLoader(tasklib.Loader))
+	loader := tasklib.Loader
+	database, close := tasklib.DatabaseLoader(loader)
+	defer close()
+	loader = tasklib.EnvLoader(database)
+	err := eval(cli.Star, cli.Parameters, tasklib.Globals, loader)
 	ctx.FatalIfErrorf(err, "eval")
-}
-
-func envLoader(next starlight.LoadFunc) starlight.LoadFunc {
-	env := map[string]interface{}{}
-	for _, e := range os.Environ() {
-		parts := strings.SplitN(e, "=", 2)
-		// allowlist? namespaced?
-		env[parts[0]] = parts[1]
-	}
-	envMod, err := convert.MakeStringDict(env)
-	if err != nil {
-		panic(err)
-	}
-	return func(thread *starlark.Thread, module string) (starlark.StringDict, error) {
-		if module == "environment" {
-			return envMod, nil
-		}
-		return next(thread, module)
-	}
 }
 
 func eval(filename string, args map[string]string, globals starlark.StringDict, load starlight.LoadFunc) error {
