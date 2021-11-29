@@ -10,12 +10,10 @@ def ny_time(timestamp):
         .in_location(_location) \
         .format(_out_format)
 
-def run():
-    ticker = parameters.get("ticker", "AAPL")
+def main(args):
+    ticker = args.get("ticker", "AAPL")
     data = load_ticker_data(ticker)
-    if parameters.get("dump"):
+    if args.get("dump"):
         dump(data)
     for item in data.Quotes:
         printf("[%s]: %v (open=%v, close=%v)\n", ticker, ny_time(item.OpensAt), item.Open, item.Close)
-
-run()

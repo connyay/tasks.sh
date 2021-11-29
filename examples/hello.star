@@ -1,5 +1,3 @@
 
-def run():
+def main(args):
     logf("Hello World!")
-
-run()
