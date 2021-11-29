@@ -11,6 +11,8 @@ import (
 	"go.starlark.net/starlark"
 
 	"github.com/connyay/tasks-sh/tasklib"
+	"github.com/connyay/tasks-sh/tasklib/database"
+	"github.com/connyay/tasks-sh/tasklib/environment"
 )
 
 var cli struct {
@@ -29,9 +31,9 @@ func main() {
 		taskID = uuid.NewString()
 	}
 	loader := tasklib.Loader
-	database, close := tasklib.DatabaseLoader(loader, taskID)
+	database, close := database.Loader(loader, taskID)
 	defer close()
-	loader = tasklib.EnvLoader(database)
+	loader = environment.Loader(database)
 	err := eval(cli.Star, cli.Parameters, tasklib.Globals, loader)
 	ctx.FatalIfErrorf(err, "eval")
 }

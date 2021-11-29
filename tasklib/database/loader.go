@@ -1,4 +1,4 @@
-package tasklib
+package database
 
 import (
 	"database/sql"
@@ -13,7 +13,7 @@ import (
 	_ "modernc.org/sqlite" // sqlite driver
 )
 
-func DatabaseLoader(next starlight.LoadFunc, taskID string) (starlight.LoadFunc, func()) {
+func Loader(next starlight.LoadFunc, taskID string) (starlight.LoadFunc, func()) {
 	sqlDB := &sql.DB{}
 	var opened bool
 	dbMod, err := convert.MakeStringDict(map[string]interface{}{

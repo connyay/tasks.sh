@@ -1,4 +1,4 @@
-package tasklib
+package environment
 
 import (
 	"os"
@@ -9,7 +9,7 @@ import (
 	"go.starlark.net/starlark"
 )
 
-func EnvLoader(next starlight.LoadFunc) starlight.LoadFunc {
+func Loader(next starlight.LoadFunc) starlight.LoadFunc {
 	env := map[string]interface{}{}
 	for _, e := range os.Environ() {
 		parts := strings.SplitN(e, "=", 2)
