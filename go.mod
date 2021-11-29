@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/alecthomas/kong v0.2.18
 	github.com/davecgh/go-spew v1.1.1
+	github.com/google/uuid v1.3.0
 	github.com/sourcegraph/starlight v0.0.0-20200510065702-c68e5b848a14
 	github.com/thecsw/mira v1.1.2
 	go.starlark.net v0.0.0-20211013185944-b0039bd2cfe3
@@ -12,7 +13,6 @@ require (
 )
 
 require (
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/pkg/errors v0.9.1 // indirect

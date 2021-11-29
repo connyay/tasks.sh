@@ -1,23 +1,35 @@
 package main
 
 import (
+	"crypto/sha256"
+	"fmt"
+
 	"github.com/alecthomas/kong"
-	"github.com/connyay/tasks-sh/tasklib"
+	"github.com/google/uuid"
 	"github.com/sourcegraph/starlight"
 	"github.com/sourcegraph/starlight/convert"
 	"go.starlark.net/starlark"
+
+	"github.com/connyay/tasks-sh/tasklib"
 )
 
 var cli struct {
 	Star       string            `flag:"" name:"star" help:"Star script to evaluate." type:"path"`
 	Parameters map[string]string `flag:"" name:"parameters" short:"p" help:"Parameters to pass to script."`
+	TaskID     string            `flag:"" name:"task-id" help:"Task ID."`
 }
 
 func main() {
 	ctx := kong.Parse(&cli)
-
+	taskID := cli.TaskID
+	if taskID == "" {
+		taskID = fmt.Sprintf("%x", sha256.Sum256([]byte(cli.Star)))
+	}
+	if taskID == "uuid()" {
+		taskID = uuid.NewString()
+	}
 	loader := tasklib.Loader
-	database, close := tasklib.DatabaseLoader(loader)
+	database, close := tasklib.DatabaseLoader(loader, taskID)
 	defer close()
 	loader = tasklib.EnvLoader(database)
 	err := eval(cli.Star, cli.Parameters, tasklib.Globals, loader)

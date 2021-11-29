@@ -53,8 +53,9 @@ func EnvLoader(next starlight.LoadFunc) starlight.LoadFunc {
 	}
 }
 
-func DatabaseLoader(next starlight.LoadFunc) (starlight.LoadFunc, func()) {
+func DatabaseLoader(next starlight.LoadFunc, taskID string) (starlight.LoadFunc, func()) {
 	sqlDB := &sql.DB{}
+	var opened bool
 	dbMod, err := convert.MakeStringDict(map[string]interface{}{
 		"db_migrate": func(migrations []interface{}) error {
 			for _, migration := range migrations {
@@ -71,18 +72,25 @@ func DatabaseLoader(next starlight.LoadFunc) (starlight.LoadFunc, func()) {
 		panic(err)
 	}
 	close := func() {
+		if !opened {
+			return
+		}
 		if err := sqlDB.Close(); err != nil {
 			log.Printf("Failed closing db %v", err)
 		}
 	}
 	return func(thread *starlark.Thread, module string) (starlark.StringDict, error) {
 		if module == "database" {
-			// Lazy load
-			s, err := sql.Open("sqlite", "./database.db")
+			err := os.MkdirAll("./data", 0750)
+			if err != nil {
+				return nil, err
+			}
+			s, err := sql.Open("sqlite", "./data/"+taskID+".db")
 			if err != nil {
 				return nil, err
 			}
 			*sqlDB = *s
+			opened = true
 			return dbMod, nil
 		}
 		return next(thread, module)
