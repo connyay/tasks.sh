@@ -11,6 +11,7 @@ import (
 	"github.com/davecgh/go-spew/spew"
 	"github.com/sourcegraph/starlight"
 	"github.com/sourcegraph/starlight/convert"
+	"go.starlark.net/lib/time"
 	"go.starlark.net/starlark"
 )
 
@@ -29,6 +30,8 @@ func main() {
 		"panic":      log.Panicf,
 		"dump":       spew.Dump,
 		"parameters": cli.Parameters,
+
+		"time": time.Module,
 	})
 	ctx.FatalIfErrorf(err, "converting globals")
 

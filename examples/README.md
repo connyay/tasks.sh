@@ -60,7 +60,7 @@ console](https://console.twilio.com/).
 ```console
 $ TWILIO_ACCOUNT_SID=$accountSID TWILIO_AUTH_TOKEN=$authToken TWILIO_NUMBER_FROM=$numberFrom \
 go run ./cmd/eval --star examples/twilio.star -p "number=$NUMBER_TO" -p 'body=hello there'
-Message sent - ID: SMece4d5ec3996400c8e4cdaa7a168d360
+Message sent. ID=SM443f45a663c5472294aed98117868202
 ```
 
 ## Reddit
@@ -72,11 +72,18 @@ page](https://old.reddit.com/prefs/apps/).
 
 ```console
 $ go run ./cmd/eval --star examples/reddit.star
-[earthporn]: "Olympic National Park -OC- 4032x3024" (/u/taoofjerry at 1638141281.000000)
-[earthporn]: "Summer morning in Tuscany, Italy. [OC] [4031x3024]" (/u/Leo1762 at 1638141901.000000)
-[earthporn]: "First and last light in the valley of gods and monsters. Tombstone Territorial Park, Yukon. [OC][3225x2151]" (/u/maddiemkay at 1638138799.000000)
-[earthporn]: "Mount Rainier National Park - OC- 4032x3024" (/u/taoofjerry at 1638141202.000000)
-[earthporn]: "Fallen tree in River. Atlanta, GA [3814x3054] [OC]" (/u/fenrirctj89 at 1638141721.000000)
+[earthporn]: "Summer morning in Tuscany, Italy. [OC] [4031x3024]" (/u/Leo1762 at Sun, 28 Nov 2021 16:25:01 MST)
+[earthporn]: "Olympic National Park -OC- 4032x3024" (/u/taoofjerry at Sun, 28 Nov 2021 16:14:41 MST)
+[earthporn]: "Mount Rainier National Park - OC- 4032x3024" (/u/taoofjerry at Sun, 28 Nov 2021 16:13:22 MST)
+[earthporn]: "Fallen tree in River. Atlanta, GA [3814x3054] [OC]" (/u/fenrirctj89 at Sun, 28 Nov 2021 16:22:01 MST)
+[earthporn]: "Fallen tree on a trail in Atlanta, GA. [3677x2942] [OC]" (/u/fenrirctj89 at Sun, 28 Nov 2021 16:20:18 MST)
+```
+
+```console
+$ go run ./cmd/eval --star examples/reddit.star -p 'subreddit=showerthoughts' -p 'count=3'
+[showerthoughts]: "Our organs are our workers. Their salaries are nutrients that we give in order of doing their jobs. People who eat healthy food pay higher wages to them" (/u/WhiHd at Sun, 28 Nov 2021 16:14:18 MST)
+[showerthoughts]: "Condoms nowadays are made by automated assembly lines meaning robots are helping to prevent human reproduction." (/u/o1pa1 at Sun, 28 Nov 2021 16:06:38 MST)
+[showerthoughts]: "People laugh and giggle when animals have sex in public, but not when humans do it." (/u/Intense_Anal_Lawyer at Sun, 28 Nov 2021 16:45:17 MST)
 ```
 
 ## Reddit + Twilio
